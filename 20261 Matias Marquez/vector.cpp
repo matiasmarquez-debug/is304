@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <cassert>
 using namespace std;
 
 class Vector {
@@ -20,6 +20,23 @@ public:
         resize();
         storage[sz] = elem;
         sz++;
+    }
+   bool empty() const {
+        return sz == 0;
+    }
+    void remove(unsigned int pos){  
+       assert(pos<sz);
+         for(int i = pos ; i < sz; i++)
+       {storage[i] = storage[i+1];}  
+       sz--;
+    }
+
+     void print() const {
+        cout << "{";
+        for(unsigned int i = 0; i < sz; i++) {
+            cout << storage[i] << " ";
+        }
+        cout << "}" << endl;
     }
    
 private:
@@ -43,6 +60,11 @@ int main() {
     for(int i = 0; i < 11; i++) {
         v.push_back(i*10);
     }
-    cout << v.size() << endl;
+    
+    v.print();
+    v.remove(6);
+    cout<<"Remove"<<endl;
+    v.print();
+    cout <<"sz: "<< v.size() << endl;
     return 0;    
 }
