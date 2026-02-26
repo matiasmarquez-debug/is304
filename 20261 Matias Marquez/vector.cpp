@@ -2,36 +2,68 @@
 #include <cassert>
 using namespace std;
 
+template<typename T>
 class Vector {
 private:
-    int* storage;
-    unsigned int capacity;
+    T* storage;
     unsigned int sz;
+    unsigned int cap;
 public:
     Vector() {
-        capacity = 5;
-        storage = new int[capacity];
+        cap = 5;
+        storage = new T[cap];
         sz = 0;
     }
-    unsigned int size() {
+
+    Vector(unsigned int c){
+       cap = c;
+       storage = new T[cap];
+       sz = 0;
+    }
+
+    ~Vector() {
+        delete [] storage;
+    }
+
+    unsigned int size() const{
         return sz;
     }
-    void push_back(int elem) {
+
+    bool empty() const{
+        return sz == 0;
+    }
+    
+    unsigned int capacity() const {
+        return cap;
+    }
+
+    void push_back(T elem) {
         resize();
         storage[sz] = elem;
         sz++;
     }
-   bool empty() const {
-        return sz == 0;
+
+    void pop_back() {
+        assert(!empty());
+        sz--;
     }
+
+    void pop_front(){
+        assert(!empty())
+        for(int i = 0; i <= sz; i++)
+           {storage[i]=storage[i+1];}
+        sz--;
+    }
+
     void remove(unsigned int pos){  
        assert(pos<sz);
          for(int i = pos ; i < sz; i++)
        {storage[i] = storage[i+1];}  
        sz--;
     }
+
      void erase(unsigned int from, unsigned int to) //[)
-  { assert((from<sz)&&(to<=sz));
+  { assert((from<to)&&(to<=sz));
       unsigned int newsz = sz-(to-from);
      for (int i = from; i < newsz; i++)
      {
@@ -48,13 +80,13 @@ public:
         }
         cout << "}" << endl;
     }
-   // como funciona esto
+
 private:
     void resize() {
         if (sz == capacity) {
             // El arreglo esta lleno
-            unsigned int newCapacity = capacity * 1.5;
-            int* newStorage = new int[newCapacity];
+            unsigned int newCapacity = capacity * 1.5 + 1;
+            T* newStorage = new T[newCapacity];
             for(unsigned int i = 0; i < sz; i++) {
                 newStorage[i] = storage[i];
             }
@@ -66,20 +98,19 @@ private:
 };
 
 int main() {
-    Vector v;
-    for(int i = 0; i < 11; i++) {
-        v.push_back(i*10);
-    }
-    
-    v.print();
-    v.erase(4,11);
-    cout<<"Aqui erase"<<endl;
-    v.print();
-    cout<<"Nuevo tamaño: "<<v.size()<<endl;
-    v.remove(6);
-    cout<<"Remove"<<endl;
-    v.print();
-    cout <<"sz: "<< v.size() << endl;
-    return 0;  
 
+//Exercise 1.1 - Basicoperations
+    Vector<int> v; 
+    for(int i = 0; i < 10; i++) {
+        v.push_back(i + 1);
+    }
+  v.print();
+  cout<<"size: "<<v.size()<<endl;
+  cout<<"capacity: "<<v.capacity()<<endl;
+
+  cout<<"Popfront and popback"<<endl;
+  v.pop_back();
+  v.pop_front();
+  v.print();
+return 0;
 }
