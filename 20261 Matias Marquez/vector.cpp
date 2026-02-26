@@ -48,7 +48,7 @@ public:
         }
         cout << "}" << endl;
     }
-   
+   // como funciona esto
 private:
     void resize() {
         if (sz == capacity) {
