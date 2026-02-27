@@ -55,6 +55,16 @@ public:
         sz--;
     }
 
+    void insert(const T& elem, unsigned int pos){
+        assert(pos >= 0 && pos <= sz);
+        resize();
+        for(unsigned int i = sz;  i > pos; i--){
+            storage[i] = storage[i-1];
+        }
+        storage[pos]= elem;
+        sz++;
+    }
+
     void remove(unsigned int pos){  
        assert(pos<sz);
          for(int i = pos ; i < sz; i++)
@@ -74,7 +84,7 @@ public:
   }
 
      void print() const {
-        cout << "{";
+        cout << "{ ";
         for(unsigned int i = 0; i < sz; i++) {
             cout << storage[i] << " ";
         }
@@ -111,6 +121,13 @@ int main() {
   cout<<"Popfront and popback"<<endl;
   v.pop_back();
   v.pop_front();
-  v.print();j 
+  v.print();
+  cout<<"size: "<<v.size()<<endl;
+  cout<<"capacity: "<<v.capacity()<<endl;
+   cout<<"Insert 99 at index 2"<<endl;
+   v.insert(99,2);
+   v.print();
 return 0;
+
+
 }
