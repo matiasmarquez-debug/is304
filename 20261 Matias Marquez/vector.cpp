@@ -49,7 +49,7 @@ public:
     }
 
     void pop_front(){
-        assert(!empty())
+        assert(!empty());
         for(int i = 0; i <= sz; i++)
            {storage[i]=storage[i+1];}
         sz--;
@@ -83,16 +83,16 @@ public:
 
 private:
     void resize() {
-        if (sz == capacity) {
+        if (sz == cap) {
             // El arreglo esta lleno
-            unsigned int newCapacity = capacity * 1.5 + 1;
+            unsigned int newCapacity = cap * 1.5 + 1;
             T* newStorage = new T[newCapacity];
             for(unsigned int i = 0; i < sz; i++) {
                 newStorage[i] = storage[i];
             }
             delete [] storage;
             storage = newStorage;
-            capacity = newCapacity;
+            cap = newCapacity;
         }
     }
 };
@@ -111,6 +111,6 @@ int main() {
   cout<<"Popfront and popback"<<endl;
   v.pop_back();
   v.pop_front();
-  v.print();
+  v.print();j 
 return 0;
 }
