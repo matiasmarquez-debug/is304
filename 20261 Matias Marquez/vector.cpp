@@ -111,14 +111,29 @@ public:
      void erase(unsigned int from, unsigned int to) //[)
   { assert((from<to)&&(to<=sz));
       unsigned int newsz = sz-(to-from);
-     for (int i = from; i < newsz; i++)
+     for (unsigned int i = from; i < newsz; i++)
      {
          storage[i]=storage[to];
          to++;
      }
     sz=newsz;
   }
+ void clear(){
+    sz=0;
+ }
 
+ bool contains(const T& elem) const{
+    if (find(elem)!=-1)
+    return true;
+    return false;
+ }
+
+ int find(const T& elem) const {
+    for (unsigned int i = 0; i< sz; i++)
+    {if (elem == storage[i])
+    return i;}
+    return -1;
+ }
      void print() const {
         cout << "{ ";
         for(unsigned int i = 0; i < sz; i++) {
@@ -144,7 +159,20 @@ private:
 };
 
 int main() {
-//Exercise 1.3 - Strings
+ Vector<int> v; 
+    for(int i = 0; i < 10; i++) {
+        v.push_back(i + 1);
+    }
+v.print();
+
+if (v.contains(7))
+   cout<<"SI esta el 3 en el vector"<<endl;
+   else cout<<"No esta en el vector"<<endl;
+   if (v.contains(12))
+   cout<<"SI esta el 3 en el vector"<<endl;
+   else cout<<"No esta en el vector"<<endl;
+cout<<v.find(5)<<endl;
+/*//Exercise 1.3 - Strings
     Vector<string> v(5); 
     v.push_back("the"); v.push_back("quick"); v.push_back("brown"); v.push_back("fox");
     v.push_back("jumps");
@@ -160,7 +188,7 @@ int main() {
    cout<<"Insert 99 at index 2"<<endl;
    v.insert("99",2);
    v.print();
-
+*/
 /*
 //Exercise 1.2 -Access methods 
 Vector<int> v(5); 
