@@ -101,7 +101,15 @@ public:
         return storage[pos];
     }
 
-    void remove(unsigned int pos){  
+    Vector(const Vector<T>& other) {
+        cap = other.cap;
+         sz = other.sz;
+        storage = new T[cap];
+        for (unsigned int i = 0; i < sz; i++) {
+        storage[i] = other.storage[i];
+    }
+}
+    void erase(unsigned int pos){  
        assert(pos<sz);
          for(int i = pos ; i < sz; i++)
        {storage[i] = storage[i+1];}  
@@ -127,13 +135,69 @@ public:
     return true;
     return false;
  }
-
  int find(const T& elem) const {
     for (unsigned int i = 0; i< sz; i++)
     {if (elem == storage[i])
     return i;}
     return -1;
  }
+
+  void remove(const T& elem){
+        for (unsigned int i=0; i < sz; i++)
+        {
+            if(elem == storage[i]){
+            erase(i);
+            return;
+        }}
+    }
+void replace(const T& oldval, const T& newval){
+  for(unsigned int i=0; i < sz; i++){
+    if (storage[i]==oldval){
+        storage[i]=newval;
+        return;}
+    
+    }
+  }
+void remove_all(const T& elem){
+    for (unsigned int i=0;i<sz; i++)
+    {
+            if(elem == storage[i]){
+            erase(i);
+        }}
+}
+void replace_all(const T& oldval, const T& newval){
+  for(unsigned int i=0; i < sz; i++){
+    if (storage[i]==oldval){
+        storage[i]=newval;
+        ;}
+    
+    }
+  }
+unsigned int count(const T& elem) const{
+return indices_of(elem).size();
+}
+
+Vector<int> indices_of(const T& elem)const{
+   Vector<int> indicesof;
+   for(unsigned int i=0; i<sz; i++)
+   if (storage[i]==elem)
+   indicesof.push_back(i);
+return indicesof;
+}
+
+void swap(unsigned int i,unsigned int j){
+if (i==j||i>=sz||j>=sz)
+return;
+  T keep=storage[j];
+  at(j) = storage[i];
+  at(i) = keep;
+}
+void reverse(){
+    unsigned int nsz = sz-1;
+    for (unsigned int i =0; i<nsz; i++){
+    swap(i,nsz);
+    nsz--;}
+}
      void print() const {
         cout << "{ ";
         for(unsigned int i = 0; i < sz; i++) {
@@ -159,19 +223,21 @@ private:
 };
 
 int main() {
- Vector<int> v; 
-    for(int i = 0; i < 10; i++) {
-        v.push_back(i + 1);
-    }
+ Vector<int> v;
+ v.push_back(3); v.push_back(1); v.push_back(1);
+ v.push_back(4); v.push_back(2); v.push_back(2);
+ v.push_back(3); v.push_back(3); v.push_back(4);
+ v.push_back(1);
+v.replace_all(4,8);
+v.print();
+cout<<"Cantidad de unos: "<<v.count(1)<<endl;
+cout<<"Indices del 3: "<<endl;
+v.indices_of(3).print();
+v.swap(2,8);
+v.print();
+v.reverse();
 v.print();
 
-if (v.contains(7))
-   cout<<"SI esta el 3 en el vector"<<endl;
-   else cout<<"No esta en el vector"<<endl;
-   if (v.contains(12))
-   cout<<"SI esta el 3 en el vector"<<endl;
-   else cout<<"No esta en el vector"<<endl;
-cout<<v.find(5)<<endl;
 /*//Exercise 1.3 - Strings
     Vector<string> v(5); 
     v.push_back("the"); v.push_back("quick"); v.push_back("brown"); v.push_back("fox");
