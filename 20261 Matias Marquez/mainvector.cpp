@@ -1,23 +1,14 @@
 #include "Vector.hh"
 #include <iostream>
-
-
 int main() {
  Vector<int> v;
- v.push_back(3); v.push_back(1); v.push_back(1);
- v.push_back(4); v.push_back(2); v.push_back(2);
- v.push_back(3); v.push_back(3); v.push_back(4);
- v.push_back(1);
-v.replace_all(4,8);
-v.print();
-cout<<"Cantidad de unos: "<<v.count(1)<<endl;
-cout<<"Indices del 3: "<<endl;
-v.indices_of(3).print();
-v.swap(2,8);
-v.print();
-v.reverse();
-v.print();
-
+for(int i =0; i<5; i++)
+ {v.push_back(i+1);}
+  v.print();
+v.rotate_left(2);
+ v.print();
+v.rotate_right(2);
+   v.print();
 /*//Exercise 1.3 - Strings
     Vector<string> v(5); 
     v.push_back("the"); v.push_back("quick"); v.push_back("brown"); v.push_back("fox");

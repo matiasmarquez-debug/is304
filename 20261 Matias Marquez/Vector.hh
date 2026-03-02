@@ -198,6 +198,59 @@ void reverse(){
     swap(i,nsz);
     nsz--;}
 }
+
+void rotate_left(unsigned int k){
+    if ((sz==0)||((k%sz)==0))
+    return;
+    unsigned int kn = k-1;
+    unsigned int endpos = sz -1;
+    for(unsigned int i=0; i<kn; i++)
+    {
+        swap(i,kn);
+        kn--;
+    }
+    for(unsigned int i=k; i<endpos; i++)
+    {
+        swap(i,endpos);
+        endpos--;
+    }
+     reverse();
+}
+
+void rotate_right(unsigned int k){
+ if ((sz==0)||((k%sz)==0))
+    return;
+    unsigned int kn = k;
+    unsigned int endpos = sz-1;
+    for(unsigned int i=0; i<kn; i++)
+    {
+        swap(i,kn);
+        kn--;
+    }
+    for(unsigned int i=k+1; i<endpos; i++)
+    {
+        swap(i,endpos);
+        endpos--;
+    }
+     reverse();
+}
+
+void sort(){
+  quicksort(0,sz-1);
+}
+void quicksort(int i, int j){
+      unsigned int pivot=sz-1;
+  unsigned int j, i;
+  for (i=0, j=sz-1; j==sz/2 ; i++)
+  {if (storage[i]<pivot&&pivot<storage[j])
+  swap(i,j);
+  else if(storage[i]<pivot&&pivot<storage[j])
+     {
+        if ()
+     }
+  }
+}
+
      void print() const {
         cout << "{ ";
         for(unsigned int i = 0; i < sz; i++) {
