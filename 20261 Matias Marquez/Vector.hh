@@ -236,19 +236,67 @@ void rotate_right(unsigned int k){
 }
 
 void sort(){
+    if (sz<=1)return;
   quicksort(0,sz-1);
 }
-void quicksort(int i, int j){
-      unsigned int pivot=sz-1;
-  unsigned int j, i;
-  for (i=0, j=sz-1; j==sz/2 ; i++)
-  {if (storage[i]<pivot&&pivot<storage[j])
-  swap(i,j);
-  else if(storage[i]<pivot&&pivot<storage[j])
+void quicksort(int front, int end){
+    int i = front - 1;
+    int pivot = storage[end];
+    if (front>=end)
+    return;
+    else{
+     for( int j = front; j < end; j++)
      {
-        if ()
+        if (storage[j]>pivot)
+        continue;
+        else if (storage[j]<=pivot)
+        {
+            i++;
+            swap(i,j);
+        }
      }
-  }
+     swap(i+1,end);
+     quicksort(front,i);
+     quicksort(i+2,end);
+    }
+}
+ void append(const Vector<T> &other){
+    if (other.empty())
+    return;
+    for(unsigned int i=0; i<other.size(); i++)
+    push_back(other.operator[](i));
+    sort(); 
+ }
+
+ Vector<T> slice(unsigned int from, unsigned int to)
+{ assert(from<to||to<=sz);
+   Vector<T> vectorslice;
+   for ( unsigned int i=from; i<to; i++)
+   vectorslice.push_back(storage[i]);
+   return vectorslice;
+}
+
+Vector& operator=(const Vector<T> &other)
+{if (this == &other) return *this; 
+    
+    delete[] storage;  
+    
+    cap = other.cap;
+    sz = other.sz;
+    storage = new T[cap];
+    for (unsigned int i = 0; i < sz; i++) {
+        storage[i] = other.storage[i];
+    }
+    
+    return *this;
+}
+template<typename P>
+bool any(P predicate) const {
+    for (unsigned int i = 0; i < sz; i++) {
+        if (predicate(storage[i]))
+            return true;
+    }
+    return false;
 }
 
      void print() const {

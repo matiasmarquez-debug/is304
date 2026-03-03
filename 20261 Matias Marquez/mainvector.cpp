@@ -2,13 +2,14 @@
 #include <iostream>
 int main() {
  Vector<int> v;
-for(int i =0; i<5; i++)
- {v.push_back(i+1);}
-  v.print();
-v.rotate_left(2);
+v.push_back(4); v.push_back(2); v.push_back(1); v.push_back(3);
+ Vector<int> z;
+ z.push_back(5); z.push_back(9); z.push_back(4); z.push_back(6);
+ v.append(z);
  v.print();
-v.rotate_right(2);
-   v.print();
+ v.slice(3,6).print();
+ v.operator=(z);
+ v.print();
 /*//Exercise 1.3 - Strings
     Vector<string> v(5); 
     v.push_back("the"); v.push_back("quick"); v.push_back("brown"); v.push_back("fox");
