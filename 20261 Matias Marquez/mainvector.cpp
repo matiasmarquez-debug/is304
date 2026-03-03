@@ -1,15 +1,35 @@
 #include "Vector.hh"
 #include <iostream>
+bool isEven(int num) {
+    return num % 2 == 0;
+}
+
+int morethanfive(int num) {
+    if (num > 5) 
+        return num;
+        return 0;
+}
+
+int morethan5(int num) {
+        return num>5;
+}
 int main() {
  Vector<int> v;
-v.push_back(4); v.push_back(2); v.push_back(1); v.push_back(3);
- Vector<int> z;
- z.push_back(5); z.push_back(9); z.push_back(4); z.push_back(6);
- v.append(z);
- v.print();
- v.slice(3,6).print();
- v.operator=(z);
- v.print();
+ v.push_back(6);v.push_back(3);v.push_back(5);v.push_back(1);v.push_back(9);
+cout<<"Por lo menos un numero es par: "<<v.any(isEven)<<endl;
+cout<<"Todos son pares : "<<v.all(isEven)<<endl;
+cout<<"Ninguno es par: "<<v.none(isEven)<<endl;
+
+cout<<(v.all(isEven)==(!(v.any([&](int x) { return (!(isEven(x))); }))))<<endl;
+cout<<(v.none(isEven)==(!(v.any(isEven))))<<endl;
+cout<<(v.all([&](int x) { return (!(isEven(x))); })==(v.none(isEven)))<<endl;
+cout<<(!(v.all([&](int x) { return (!(isEven(x))); }))==(!(v.none(isEven))))<<endl;
+cout<<(!(v.none(isEven))==(v.any(isEven)))<<endl;
+v.filter(morethan5).print();
+v.map([](int x) { return x * 2; }).print();
+v.for_each(morethanfive);
+v.print();
+
 /*//Exercise 1.3 - Strings
     Vector<string> v(5); 
     v.push_back("the"); v.push_back("quick"); v.push_back("brown"); v.push_back("fox");

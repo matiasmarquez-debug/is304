@@ -299,6 +299,54 @@ bool any(P predicate) const {
     return false;
 }
 
+template<typename P>
+bool all(P predicate) const {
+    if(empty())   return true;
+    for (unsigned int i = 0; i < sz; i++) {
+        if (!(predicate(storage[i])))   
+            return false;
+    }
+    return true;
+}
+
+template<typename P>
+bool none(P predicate) const {
+    if(empty())   return true;
+    for (unsigned int i = 0; i < sz; i++) {
+        if (predicate(storage[i]))
+            return false;
+    }
+    return true;
+}
+
+template<typename P>
+Vector<T> filter(P predicate) const {
+Vector<T> filt;
+for (unsigned int i = 0; i < sz; i++)
+{if (predicate(storage[i]))
+    filt.push_back(storage[i]);
+}
+return filt;
+}
+
+template<typename Function>
+Vector<T> map (Function f) const{
+    Vector<T> mapped;
+    for (unsigned int i = 0; i < sz; i++)
+    {
+    
+        mapped.push_back(f(storage[i]));
+
+    }
+    return mapped;
+}
+template<typename Function>
+void for_each(Function f) {
+    for (unsigned int i = 0; i < sz; i++)
+    {
+      storage[i] = f(storage[i]);
+    }
+}
      void print() const {
         cout << "{ ";
         for(unsigned int i = 0; i < sz; i++) {
