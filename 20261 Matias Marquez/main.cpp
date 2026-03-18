@@ -20,5 +20,7 @@ list.push_back(3);list.push_back(4);list.push_back(7);   list.push_back(2);list.
 list.print();
 list.merge_sort();
 list.print();
+list.indices_of(1).print();
+list.slice(1,4).print();
 return 0;
 }

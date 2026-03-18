@@ -91,7 +91,7 @@ public:
         cout<<"}"<<endl;
     }
 
-    const Node* at_node(unsigned int pos) const {
+   Node* at_node(unsigned int pos) const {
         assert(pos < sz);
         Node* tmp = first;
         for (unsigned int i = 0; i < pos; i++) {
@@ -408,6 +408,45 @@ void append(const List<T>& other) {
     tmp = tmp->get_next();
     }
     }
+List<T> slice(unsigned int from, unsigned int to) const {
+    assert(from<=to&&to<=sz);
+    List<T> newl;
+    Node* tmp = at_node(from);
+    while (from<to){
+       newl.push_back(tmp->get_data());
+       tmp= tmp->get_next();
+        from++;
+    }
+   return newl;
+}
+
+template<typename Predicate>
+bool any (Predicate p) const {
+    Node* tmp=first;
+    while ( tmp != nullptr){
+     if(p(tmp->get_data()))
+     return true;
+
+     tmp = tmp->get_next();
+    }return false;
+}
+
+template<typename Predicate>
+ bool all(Predicate p) const {
+    if (empty()) return true;
+    Node* tmp=first;
+    while ( tmp != nullptr){
+     if(!p(tmp->get_data()))
+     return false;
+
+     tmp = tmp->get_next();
+    }return true;
+}
+template<typename Predicate>
+bool none(Predicate p) const {
+return !any(p);
+}
+
 
 };
 
