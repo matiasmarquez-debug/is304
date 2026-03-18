@@ -483,7 +483,21 @@ void for_each(Function f)  {
     } 
 }
 
-
+template<typename Function>
+T foldl(Function f, T acum) const { 
+    Node* tmp = first;
+    while (tmp != nullptr) {
+        acum = f(acum, tmp->get_data());
+        tmp = tmp->get_next();
+    }
+    return acum;
+}
+template<typename Function>
+T foldr(Function f, T acum) const{
+    List<T> reversed(*this);
+    reversed.reverse();
+    return reversed.foldl(f, acum);
+}
 };
 
 
