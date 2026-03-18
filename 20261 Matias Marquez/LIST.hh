@@ -49,9 +49,13 @@ public:
         sz=0;
         first=nullptr;
         last=nullptr;
+        Node* tmp = other.first;
+        while (tmp!=nullptr)
+        {push_back(tmp->get_data());
+        tmp = tmp->get_next();}
     }
 
-    ~List() { Node* current = first;
+    ~List() {
      clear();
     }
 
@@ -87,7 +91,16 @@ public:
         cout<<"}"<<endl;
     }
 
-    Node* at_node(unsigned int pos) const {
+    const Node* at_node(unsigned int pos) const {
+        assert(pos < sz);
+        Node* tmp = first;
+        for (unsigned int i = 0; i < pos; i++) {
+            tmp = tmp->get_next();
+        }
+        return tmp;
+    }
+
+ Node* at_node(unsigned int pos)  {
         assert(pos < sz);
         Node* tmp = first;
         for (unsigned int i = 0; i < pos; i++) {
@@ -122,6 +135,9 @@ public:
  
   void pop_back(){
   assert(!empty());
+   if (sz==1)
+   {delete first;
+     first = nullptr; last=nullptr; sz--; return;}
     Node* tmp=first;
     for (unsigned int i=0; i<sz-1; i++)
     tmp = tmp->get_next();
@@ -170,27 +186,24 @@ public:
 
 void erase(unsigned int from, unsigned int to){
     assert(from < to && to <= sz);
-    Node* tmp=first;
-    Node* delet=nullptr;
-    Node* tmpa=nullptr;
-    for (unsigned int i =0; i < from-1; i++)    
-    tmp = tmp->get_next();
-    tmpa= tmp->get_next();
-    for (unsigned int i = from; i < to; i++)
-    {delet=tmpa;
-    tmpa= (tmpa->get_next());
-    delete delet;
+    if (from == 0)
+    {for (int i = 0; i<to; i++)
+      pop_front();
+       return;}
+    Node* tmp = at_node(from);
+    Node* tmpa = at_node(from-1);
+    Node* borrar = nullptr;
+    for(unsigned int i = from; i<to ; i++)
+    { borrar = tmp;
+        tmp = (tmp->get_next());
+        delete borrar;
     }
-    tmp->set_next(tmpa);
-    if(from==0)
-    {
-        first = tmpa;
-    }
-    if(to==sz)
-    {
-        last = tmp;
-    }
-       sz=sz-(to-from);
+   tmpa->set_next(tmp);
+  if (to == sz)
+    last = tmpa;
+
+   sz = sz - (to-from);
+   
  }
 void clear(){ Node* current = first;
     while (current != nullptr) {
@@ -268,17 +281,136 @@ void replace_all(const T& oldval, const T& newval){
 }
 
 unsigned int count(const T& elem) const{
-    unsigned int count=0;
+  return indices_of(elem).size();}
+
+List<int> indices_of(const T& elem) const{
+    List<int> indices; 
+    if (empty())
+    return indices;
     Node* tmp=first;
-    for (unsigned int i = 0; i<sz; i++)
+    unsigned int i = 0;
+    while(tmp!=nullptr)
     {
-        if (tmp->get_data()==elem)
-        count++;
-        tmp = tmp->get_next();
+        if (elem==tmp->get_data())
+        indices.push_back(i);
+     tmp = tmp->get_next();
+     i++;
     }
-    return count;}
+    return indices;
+}
+
+void swap(unsigned int i, unsigned int j){
+    assert(i<sz && j<sz);
+    if (i==j) return;
+    Node* tmp1 = at_node(i);
+    Node* tmp2 = at_node(j);
+    T ayuda = tmp1->get_data();
+    tmp1->set_data(tmp2->get_data());
+    tmp2->set_data(ayuda);
+}
+void reverse(){
+    reverse(0,sz-1);
+}
+void reverse(unsigned int i, unsigned int j){
+    if (sz==0 || sz==1) return;
+    while(i<j){
+        swap(i,j);
+        i++; j--;
+    }
+}
+
+void rotate_left(unsigned int k){
+    k=k%sz;
+    if (sz ==0 || k==0) return;
+    reverse(0,k-1);
+    reverse(k, sz-1);
+    reverse();
+}
+
+void rotate_right(unsigned int k){
+      k=k%sz;
+    if (sz ==0 || k==0) return;
+    rotate_left(sz-k);
+}
+
+void merge_sort(){
+    if( sz<= 1) return;
+  List<T> left, right;
+  split(left,right);
+  left.merge_sort();
+  right.merge_sort();
+  *this = merge(left, right);
+}
+private: 
+List<T> merge(List<T> left, List<T> right){
+ List<T> newlist;
+ Node* tmpl = left.first;
+ Node* tmpr = right.first;
+//unsigned int i =0, j=0;
+unsigned int tam =left.size()+right.size();
+while (newlist.size()<tam){
+    if(tmpl==nullptr)
+    {while (tmpr!=nullptr)
+         {newlist.push_back(tmpr->get_data());
+          tmpr=tmpr->get_next();
+         //j++;
+         } return newlist;
+    } else if (tmpr==nullptr)
+         {while (tmpl!=nullptr)
+         {newlist.push_back(tmpl->get_data());
+          tmpl=tmpl->get_next();
+        //  i++;
+         } return newlist;
+    } 
+    if (tmpl->get_data() < tmpr->get_data())
+        {newlist.push_back(tmpl->get_data());
+        tmpl = tmpl->get_next();
+       //  i++;
+       }
+   else 
+       {newlist.push_back(tmpr->get_data());
+       tmpr = tmpr->get_next();
+       //j++;
+       }
+   
+   }
+   return newlist;
+}
+
+void split(List<T>& left, List<T>& right){
+  unsigned int mitad = sz/2;
+ Node* tmp = first;
+ for (int i = 0; i<mitad; i++)
+ {left.push_back(tmp->get_data());
+  tmp = tmp->get_next();}
+  tmp = at_node(mitad);
+ for (int i = mitad; i<sz; i++)
+ {right.push_back(tmp->get_data());
+tmp = tmp->get_next();}}
+
+
+public:
+void operator=(const List<T>& other)
+{  if( this == &other) return;
+    clear();
+    Node* tmp = other.first;
+    while (tmp!=nullptr)
+      {push_back(tmp->get_data());
+        tmp = tmp->get_next();}
+}
+
+void append(const List<T>& other) {
+     if (other.empty()) return;
+    unsigned int tam = other.size();
+    Node* tmp=other.first;
+    for(unsigned int i=0; i<tam; i++)
+    {push_back(tmp->get_data());
+    tmp = tmp->get_next();
+    }
+    }
 
 };
+
 
 
 
