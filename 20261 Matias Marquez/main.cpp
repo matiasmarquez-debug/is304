@@ -14,13 +14,17 @@ int morethanfive(int num) {
 int morethan5(int num) {
         return num>5;
 }
+
+string paroimpar ( int num){
+    if (num%2==0) return "par";
+    return "impar";
+}
 int main() {
 List<int> list;
 list.push_back(3);list.push_back(4);list.push_back(7);   list.push_back(2);list.push_back(1);   list.push_back(9);list.push_back(6);   list.push_back(5);   list.push_back(8);   
 list.print();
 list.merge_sort();
-list.print();
-list.indices_of(1).print();
-list.slice(1,4).print();
+list.map(paroimpar).print();
+
 return 0;
 }

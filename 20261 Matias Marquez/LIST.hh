@@ -447,6 +447,42 @@ bool none(Predicate p) const {
 return !any(p);
 }
 
+template<typename Predicate>
+List<T> filter(Predicate p) const {
+    List<T> filtro;
+    Node* tmp = first;
+    while (tmp!= nullptr)
+    {
+        if (p(tmp->get_data()))
+        filtro.push_back(tmp->get_data());
+
+    tmp = tmp->get_next();
+    } return filtro;
+}
+
+template<typename Function>
+auto map(Function f) const -> List<decltype(f(std::declval<T>()))>
+{
+using R = decltype(f(std::declval<T>()));
+List<R> result;
+Node* tmp = first;
+while (tmp != nullptr){
+    R f_tmp = f(tmp->get_data());
+    result.push_back(f_tmp);
+    tmp = tmp->get_next();
+}return result;
+}
+
+template<typename Function>
+void for_each(Function f)  {
+    Node* tmp = first;
+    while (tmp!= nullptr)
+    {
+    tmp->set_data(f(tmp->get_data()));   
+    tmp = tmp->get_next();
+    } 
+}
+
 
 };
 
