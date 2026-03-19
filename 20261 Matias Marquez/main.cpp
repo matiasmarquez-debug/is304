@@ -1,5 +1,6 @@
 #include "Vector.hh"
 #include "LIST.hh"
+#include "dlist.hh"
 #include <iostream>
 bool isEven(int num) {
     return num % 2 == 0;
@@ -20,11 +21,12 @@ string paroimpar ( int num){
     return "impar";
 }
 int main() {
-List<int> list;
-list.push_back(3);list.push_back(4);list.push_back(7);   list.push_back(2);list.push_back(1);   list.push_back(9);list.push_back(6);   list.push_back(5);   list.push_back(8);   
-list.print();
-list.merge_sort();
-list.map(paroimpar).print();
+Dlist<int> l;
+l.push_back(3);l.push_back(4);l.push_back(7);   l.push_back(2);l.push_back(1);   l.push_back(9);l.push_back(6);   l.push_back(5);   l.push_back(8);   
+l.print();  
+cout<<l.size()<<endl;
+l.quicksort();
+l.print();
 
 return 0;
 }
