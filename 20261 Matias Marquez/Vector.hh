@@ -199,40 +199,22 @@ void reverse(){
     nsz--;}
 }
 
+void reverse(unsigned int from, unsigned int to){
+    if(to==sz) to--;
+    for (unsigned int i =from; i<to; i++){
+    swap(i,to);
+      to--;}}
+
 void rotate_left(unsigned int k){
-    if ((sz==0)||((k%sz)==0))
-    return;
-    unsigned int kn = k-1;
-    unsigned int endpos = sz -1;
-    for(unsigned int i=0; i<kn; i++)
-    {
-        swap(i,kn);
-        kn--;
-    }
-    for(unsigned int i=k; i<endpos; i++)
-    {
-        swap(i,endpos);
-        endpos--;
-    }
-     reverse();
+   k = k%sz;
+   if (k=sz) return;
+reverse(0,k);
+reverse(k+1, sz-1);
+reverse();
 }
 
 void rotate_right(unsigned int k){
- if ((sz==0)||((k%sz)==0))
-    return;
-    unsigned int kn = k;
-    unsigned int endpos = sz-1;
-    for(unsigned int i=0; i<kn; i++)
-    {
-        swap(i,kn);
-        kn--;
-    }
-    for(unsigned int i=k+1; i<endpos; i++)
-    {
-        swap(i,endpos);
-        endpos--;
-    }
-     reverse();
+ rotate_left(sz-k);
 }
 
 void sort(){
@@ -260,12 +242,47 @@ void quicksort(int front, int end){
      quicksort(i+2,end);
     }
 }
+void mergesort(){
+  if (sz<=1) return;
+  Vector<T> left;
+  Vector<T> right;
+  split(left,right);
+  left.mergesort();
+  right.mergesort();
+  *this = merge(left,right);
+}
+private:
+Vector<T> merge(Vector<T> left, Vector<T> right){
+    Vector<T> newvec;
+    unsigned int r=0;
+   unsigned int l=0;
+   unsigned int tam = left.size() + right.sz();
+   while (newvec.size()<tam)
+   { if(r>=right.size())
+    while(l<left.size()){
+    newvec.push_back(left[l]);
+       l++;}
+    else if (l>=left.size())
+    while(r<right.size())  {  newvec.push_back(right[r]);
+         r++;}
+      else if (lefte[l]<right[r])
+         {newvec.push_back(left[l]);
+          l++;}
+     else 
+         {newvec.push_back(right[r]);
+          r++;}
+   }
+   return newvec;
+}
+
+public:
+
  void append(const Vector<T> &other){
     if (other.empty())
     return;
-    for(unsigned int i=0; i<other.size(); i++)
+    unsigned int tam=other.size();
+    for(unsigned int i=0; i<tam; i++)
     push_back(other.operator[](i));
-    sort(); 
  }
 
  Vector<T> slice(unsigned int from, unsigned int to)
@@ -276,9 +293,8 @@ void quicksort(int front, int end){
    return vectorslice;
 }
 
-Vector& operator=(const Vector<T> &other)
-{if (this == &other) return *this; 
-    
+void operator=(const Vector<T> &other)
+{if (this == &other) return;
     delete[] storage;  
     
     cap = other.cap;
@@ -288,7 +304,6 @@ Vector& operator=(const Vector<T> &other)
         storage[i] = other.storage[i];
     }
     
-    return *this;
 }
 template<typename P>
 bool any(P predicate) const {

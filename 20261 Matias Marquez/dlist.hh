@@ -179,5 +179,122 @@ Node* partition (Node* low, Node* high){
    swapdata(posp, high);
    return posp;
 }
+
+void mergesort(){
+   if (sz<=1) return;
+   Dlist<T> left;
+   Dlist<T> right;
+   split(left,right);
+   left.mergesort();
+   right.mergesort();
+   *this = merge(left,right);
+}
+
+private:
+
+Dlist<T> merge(Dlist<T>& left, Dlist<T>& right){
+   Dlist<T> newlist;
+ Node* tmpl = left.first;
+ Node* tmpr = right.first;
+ while (tmpl!=nullptr || tmpr != nullptr)
+ {
+   if(tmpl == nullptr){
+    while (tmpr!= nullptr){
+      newlist.push_back(tmpr->get_data());
+      tmpr = tmpr->get_next(); }}
+   else if(tmpr == nullptr){
+    while (tmpl!= nullptr){
+      newlist.push_back(tmpl->get_data());
+      tmpl = tmpl->get_next(); }}
+   else{while( tmpl!=nullptr && tmpr != nullptr){
+      if(tmpl->get_data()<tmpr->get_data())
+      {newlist.push_back(tmpl->get_data());
+        tmpl = tmpl->get_next();}else {
+      newlist.push_back(tmpr->get_data());
+       tmpr = tmpr->get_next();}
+   }
+   }
+ }return newlist;
+}
+
+void split(Dlist<T>& left, Dlist<T>& right){
+   Node* end = first;
+   Node* mitad = first;
+   while(end && end->get_next()){
+      mitad = mitad->get_next();
+      end = end->get_next()->get_next();
+   }
+   Node* tmp = first;
+   while(tmp != mitad){
+      left.push_back(tmp->get_data());
+      tmp = tmp->get_next();
+   }
+      while(tmp != nullptr){
+      right.push_back(tmp->get_data());
+      tmp = tmp->get_next();
+   }
+}
+
+public:
+void append(const Dlist<T>& other){
+   if(&other==this){
+   Dlist<T> copia(other);
+   append(copia);return;}
+    Node* tmp = other.first;
+   while (tmp != nullptr){
+      push_back(tmp->get_data());
+      tmp = tmp->get_next();
+   }
+}
+
+void operator=(const Dlist<T>& other){
+   if(this==&other) return;
+   this->clear();
+   Node* tmp = other.first;
+   while (tmp!=nullptr){
+      push_back(tmp->get_data());
+      tmp = tmp->get_next();
+   }
+}
+
+void unique(){
+   Node* tmp = first;
+   Node* borrar;
+   Node* conecta;
+   while(tmp && tmp->get_next())
+   {   conecta = tmp->get_next();
+      if (conecta && tmp->get_data()==conecta->get_data()){
+        while(conecta && tmp->get_data() == conecta->get_data()){
+         borrar = conecta;
+         conecta = conecta->get_next();
+         delete borrar;
+        }
+         tmp->set_next(conecta);
+         if (conecta) {
+    conecta->set_prev(tmp);
+} else {
+    last = tmp;
+}
+   } else tmp = tmp->get_next();
+   
+   }
+
+}
+
+void splice(Dlist<T>& other){
+   if (this->empty())
+   {
+      first = other.first;
+      last  = other.last;     
+   } else 
+   { other.first->set_prev(last);
+   last->set_next(other.first);
+    last=other.last;
+   }
+      other.first = nullptr;
+      other.last = nullptr;
+}
+
+
 };
 #endif
