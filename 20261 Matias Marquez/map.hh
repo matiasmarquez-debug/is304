@@ -2,6 +2,7 @@
 #define _MAP_HH_
 #include <iostream>
 #include <stdexcept>
+#include <cassert>
 using namespace std;
 
 template<typename K, typename V>
@@ -21,6 +22,7 @@ private:
         const K& getkey() const{return key;}
         void setkey(const K& k) {key = k;}
         const V& getval() const{return val;}
+        V& getval() {return val;}
         void setval(const V& v) {val = v;}
         Node* getleft() const{return left;}
         Node* getright() const{return right;}
@@ -47,15 +49,19 @@ public:
     }
    
     unsigned int size() const {return sz;}
+
     bool empty() const {return root==nullptr;}
+
     void insert(const K& key, const V& val){
     root = insert(key,val,root);
     }
+
     void clear(){
     clear(root);
     root = nullptr;
     sz = 0;
     }
+    
     void print(){
     print(root);
     cout<<""<<endl;
@@ -72,13 +78,23 @@ public:
         return p;  
     }*/ 
 
-    const V& search(const K& key) const {
-    const Node* n = search(key, root);
+    const V& find(const K& key, const V& nofind) const {
+    const Node* n = find(key, root);
     if (n == nullptr)
-        throw std::out_of_range("clave no encontrada");
+       return nofind;
+        //throw std::out_of_range("clave no encontrada");
     return n->getval();
     }
 
+    template <typename function>
+    void preorden(function f){
+    preorden(f,root);
+    }
+
+    template <typename function>
+    void postorden(function f){
+    postorden(f,root);
+    }
 private:
     Node* insert(const K& key, const V& val, Node* n){
     if (n==nullptr){
@@ -142,13 +158,13 @@ private:
     if (!n->hasleft()) return n;
     return findmin(n->getleft());}
 
-    const Node* search(const K& key,const Node* n) const{
+    const Node* find(const K& key,const Node* n) const{
        if (n==nullptr)
             return nullptr;
         else if (key<n->getkey())
-            return search(key, n->getleft());
+            return find(key, n->getleft());
         else if (n->getkey()<key)
-            return search(key, n->getright());
+            return find(key, n->getright());
         else
             return n;
     }
@@ -160,6 +176,22 @@ private:
     p->setright(copy(n->getright()));
     return p;
     }
+
+template <typename function>
+    void preorden(function f, Node* n){
+        if (n==nullptr) return;
+        f(n->getval());
+        preorden(f, n->getleft());
+        preorden(f, n->getright());
+    }
+
+template <typename function>
+    void postorden(function f, Node* n){
+        if (n==nullptr) return;
+        postorden(f, n->getleft());
+        postorden(f, n->getright());
+           f(n->getval());
+    }    
 };
 
 
