@@ -30,9 +30,15 @@ public:
         }
     }
 
-    ~HashTable() {
+ ~HashTable() {
         for (unsigned int i = 0; i < table.capacity(); ++i) {
-            delete table[i]; //eliminar colisiones falta implementar
+            HashNode* current = table[i];
+            while (current != nullptr) {
+                HashNode* toDelete = current;
+                current = current->getNext();
+                delete toDelete;
+            }
+            table[i] = nullptr;
         }
     }
 
@@ -58,19 +64,40 @@ public:
         }
     }
 
-    bool find(const K& key) const {
+    V find(const K& key) const {
         unsigned int index = hashFunction(key);
-        if (table[index] != nullptr && table[index]->key == key) {
-            return true;
+        HashNode* current = table[index];
+
+        while (current != nullptr) {
+            if (current->getKey() == key) {
+                return current->getValue();
+            }
+            current = current->getNext();
         }
-        return false;
+
+        throw std::runtime_error("Key not found");
     }
 
-    void remove(const K& key) {
+  void remove(const K& key) {
         unsigned int index = hashFunction(key);
-        if (table[index] != nullptr && table[index]->key == key) {
-            delete table[index];
-            table[index] = nullptr;
+        HashNode* current = table[index];
+        HashNode* prev = nullptr;
+
+        while (current != nullptr) {
+            if (current->getKey() == key) {
+                if (prev == nullptr) {
+                    // El nodo a eliminar es el primero de la lista
+                    table[index] = current->getNext();
+                } else {
+                    // El nodo está en medio o al final
+                    prev->setNext(current->getNext());
+                }
+                delete current;
+                sz--;
+                return;
+            }
+            prev = current;
+            current = current->getNext();
         }
     }
 };
