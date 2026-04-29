@@ -256,7 +256,7 @@ Vector<T> merge(Vector<T> left, Vector<T> right){
     Vector<T> newvec;
     unsigned int r=0;
    unsigned int l=0;
-   unsigned int tam = left.size() + right.sz();
+   unsigned int tam = left.size() + right.size();
    while (newvec.size()<tam)
    { if(r>=right.size())
     while(l<left.size()){
@@ -265,7 +265,7 @@ Vector<T> merge(Vector<T> left, Vector<T> right){
     else if (l>=left.size())
     while(r<right.size())  {  newvec.push_back(right[r]);
          r++;}
-      else if (lefte[l]<right[r])
+      else if (left[l]<right[r])
          {newvec.push_back(left[l]);
           l++;}
      else 
