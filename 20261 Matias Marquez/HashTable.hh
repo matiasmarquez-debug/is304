@@ -29,17 +29,7 @@ public:
 
  ~HashTable() {
         for (unsigned int i = 0; i < table.capacity(); ++i) {
-<<<<<<< HEAD
             table[i].clear();
-=======
-            HashNode* current = table[i];
-            while (current != nullptr) {
-                HashNode* toDelete = current;
-                current = current->getNext();
-                delete toDelete;
-            }
-            table[i] = nullptr;
->>>>>>> a4360fa23a62570254911599dbe24443b5dad72e
         }
     }
 
@@ -57,7 +47,6 @@ public:
         sz++;
     }
 
-<<<<<<< HEAD
     std::pair<bool, V> find(const K& key) const {
     unsigned int index = hashFunction(key);
     auto* current = table[index].get_first();
@@ -87,42 +76,6 @@ public:
             delete current;
             sz--;
             return;
-=======
-    V find(const K& key) const {
-        unsigned int index = hashFunction(key);
-        HashNode* current = table[index];
-
-        while (current != nullptr) {
-            if (current->getKey() == key) {
-                return current->getValue();
-            }
-            current = current->getNext();
-        }
-
-        throw std::runtime_error("Key not found");
-    }
-
-  void remove(const K& key) {
-        unsigned int index = hashFunction(key);
-        HashNode* current = table[index];
-        HashNode* prev = nullptr;
-
-        while (current != nullptr) {
-            if (current->getKey() == key) {
-                if (prev == nullptr) {
-                    // El nodo a eliminar es el primero de la lista
-                    table[index] = current->getNext();
-                } else {
-                    // El nodo está en medio o al final
-                    prev->setNext(current->getNext());
-                }
-                delete current;
-                sz--;
-                return;
-            }
-            prev = current;
-            current = current->getNext();
->>>>>>> a4360fa23a62570254911599dbe24443b5dad72e
         }
         prev = current;
         current = current->get_next();
