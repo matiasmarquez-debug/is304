@@ -1,3 +1,5 @@
+#ifndef _VECTOR_HH_
+#define _VECTOR_HH_
 #include <iostream>
 #include <cassert>
 using namespace std;
@@ -386,3 +388,4 @@ private:
     }
 };
 
+#endif

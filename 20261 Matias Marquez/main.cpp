@@ -1,7 +1,8 @@
 #include "Vector.hh"
-#include "LIST.hh"
+#include "SList.hh"
 #include "dlist.hh"
 #include "map.hh"
+#include "HashTable.hh"
 #include <iostream>
 using namespace std;
 bool isEven(int num) {
@@ -29,6 +30,6 @@ void aumentar(int& v) {
 }
 
 int main() {
-  
+ 
 return 0;
 }

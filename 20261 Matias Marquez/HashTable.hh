@@ -1,7 +1,7 @@
 #ifndef _HASHTABLE_HH_
 #define _HASHTABLE_HH_
 #include <iostream>
-#include "LIST.hh"
+#include "SLIST.hh"
 #include "Vector.hh"
 #include <string>
 
@@ -18,7 +18,8 @@ private:
         const V& getValue() const { return value; }
         void setValue(const V& v) { value = v; }
     };
-    Vector<List<HashNode>> table(10);
+    Vector<List<HashNode>> table{10};
+    unsigned int capacity = 10;
     unsigned int sz;
 public:
     HashTable() : sz(0) {
