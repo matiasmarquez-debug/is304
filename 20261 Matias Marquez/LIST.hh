@@ -82,6 +82,10 @@ public:
         return sz == 0;
     }
 
+    Node* get_first() const {
+        return first;
+    }
+
     void print() const {
         if (empty()){
         cout<<"{}"<<endl; return;}
@@ -218,8 +222,8 @@ void clear(){ Node* current = first;
     sz = 0;
 }
 bool contains(const T& elem) const{
-  Node* tmp=first;
-  for(unsigned int i = 0; i<sz; i++)
+  Node* tmp=first; 
+  while(tmp!=nullptr)
   {
     if (elem==tmp->get_data())
     return true;

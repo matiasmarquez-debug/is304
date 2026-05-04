@@ -12,27 +12,24 @@ private:
     private:
         K key;
         V value;
-        HashNode* next; //para colisiones
     public:
-        HashNode(K k, V v) : key(k), value(v), next(nullptr) {}
+        HashNode(K k, V v) : key(k), value(v) {}
         const K& getKey() const { return key; }
         const V& getValue() const { return value; }
         void setValue(const V& v) { value = v; }
-        HashNode* getNext() const { return next; }
-        void setNext(HashNode* n) { next = n; }
     };
-    Vector<HashNode*> table(10);
+    Vector<List<HashNode>> table(10);
     unsigned int sz;
 public:
     HashTable() : sz(0) {
         for (unsigned int i = 0; i < table.capacity(); ++i) {
-            table[i] = nullptr;
+            table[i] = List<HashNode>();
         }
     }
 
     ~HashTable() {
         for (unsigned int i = 0; i < table.capacity(); ++i) {
-            delete table[i]; //eliminar colisiones falta implementar
+            table[i].clear();
         }
     }
 
@@ -43,36 +40,47 @@ public:
         return hash;}
     
 
-    void insert(const K& key, const V& value) {
-        HashNode* newNode = new HashNode(key, value);
+     void insert(const K& key, const V& value) {
+        //HashNode* newNode = new HashNode(key, value);
         unsigned int index = hashFunction(key);
-        if (table[index] == nullptr) {
-             table[index] = newNode;
-        }else 
-        {
-        HashNode* current = table[index];
-        while (current->getNext() != nullptr) {
-            current = current->getNext();
-        }
-        current->setNext(newNode);
-        }
+             table[index].push_back(HashNode(key, value));
+        sz++;
     }
 
-    bool find(const K& key) const {
-        unsigned int index = hashFunction(key);
-        if (table[index] != nullptr && table[index]->key == key) {
-            return true;
-        }
-        return false;
+    std::pair<bool, V> find(const K& key) const {
+    unsigned int index = hashFunction(key);
+    auto* current = table[index].get_first();
+    while(current != nullptr)
+    {if(key==current->get_data().getKey())
+        return std::make_pair(true, current->get_data().getValue());
+    current = current->get_next();
     }
+
+    return std::make_pair(false, V()); // No encontrado
+}
+    
 
     void remove(const K& key) {
-        unsigned int index = hashFunction(key);
-        if (table[index] != nullptr && table[index]->key == key) {
-            delete table[index];
-            table[index] = nullptr;
+    unsigned int index = hashFunction(key);
+    
+    auto* current = table[index].get_first(); // 'auto' deduce el tipo privado
+    auto* prev = nullptr;                  // Inicializamos prev igual a current o nullptr
+    
+    while (current != nullptr) {
+        if (current->get_data().getKey() == key) {
+            if (prev == nullptr) {
+                table[index].set_first(current->get_next());
+            } else {
+                prev->set_next(current->get_next());
+            }
+            delete current;
+            sz--;
+            return;
         }
-    }
+        prev = current;
+        current = current->get_next();
+    } 
+  }
 };
 
 #endif 
