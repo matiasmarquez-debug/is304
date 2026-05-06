@@ -4,11 +4,12 @@
 #include "SLIST.hh"
 #include "Vector.hh"
 #include <string>
+using namespace std;
 
 template <typename K, typename V>
 class HashTable {
 private:
-  class HashNode {
+  /*class HashNode {
     private:
         K key;
         V value;
@@ -17,15 +18,13 @@ private:
         const K& getKey() const { return key; }
         const V& getValue() const { return value; }
         void setValue(const V& v) { value = v; }
-    };
-    Vector<List<HashNode>> table{10};
-    unsigned int capacity = 10;
+    };*/
+    Vector<List<pair<K, V>>> table;
+    unsigned int m;;
     unsigned int sz;
 public:
-    HashTable() : sz(0) {
-        for (unsigned int i = 0; i < table.capacity(); ++i) {
-            table[i] = List<HashNode>();
-        }
+    HashTable(unsigned int capacity) : sz(0), m(capacity) {
+      table.resize(capacity);
     }
 
  ~HashTable() {
@@ -37,51 +36,50 @@ public:
     unsigned int hashFunction(const K& key) const {
         unsigned int hash = 0;
         for (unsigned int i = 0; i < key.length(); i++) {
-            hash = (hash * 31 + key[i]) % 10;    }
+            hash = (hash * 31 + key[i]) % m;    }
         return hash;}
     
-
      void insert(const K& key, const V& value) {
-        //HashNode* newNode = new HashNode(key, value);
+        bool found = false; 
         unsigned int index = hashFunction(key);
-             table[index].push_back(HashNode(key, value));
+        table[index].for_eachro([&](pair<K, V>& elem) {
+            if (elem.first == key) {
+                elem.second = value;
+                found = true;
+            }
+        });
+        if (found) return;
+        table[index].push_back(make_pair(key, value));
         sz++;
     }
 
-    std::pair<bool, V> find(const K& key) const {
+    pair<bool, V> find(const K& key) {
     unsigned int index = hashFunction(key);
-    auto* current = table[index].get_first();
-    while(current != nullptr)
-    {if(key==current->get_data().getKey())
-        return std::make_pair(true, current->get_data().getValue());
-    current = current->get_next();
-    }
-
-    return std::make_pair(false, V()); // No encontrado
+    bool found = false;
+    V val{};
+    table[index].for_eachro([&](pair<K,V>& elem){
+        if (elem.first==key)
+            {found = true;
+             val = elem.second;
+            }
+    }); return make_pair(found, val);
 }
     
 
     void remove(const K& key) {
-    unsigned int index = hashFunction(key);
-    
-    auto* current = table[index].get_first(); // 'auto' deduce el tipo privado
-    auto* prev = nullptr;                  // Inicializamos prev igual a current o nullptr
-    
-    while (current != nullptr) {
-        if (current->get_data().getKey() == key) {
-            if (prev == nullptr) {
-                table[index].set_first(current->get_next());
-            } else {
-                prev->set_next(current->get_next());
-            }
-            delete current;
-            sz--;
-            return;
-        }
-        prev = current;
-        current = current->get_next();
-    } 
-  }
+     unsigned int index = hashFunction(key);
+     bool found = false;
+     pair<K,V> lastelem=table[index].back();
+     table[index].for_eachro([&](pair<K,V>& elem)
+    {if(!found && elem.first==key){
+        found = true;
+        elem = lastelem;
+    }
+    });
+    if (found == true) {
+    table[index].pop_back();
+    sz--;}
+    }
 };
 
 #endif 

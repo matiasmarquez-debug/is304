@@ -371,7 +371,16 @@ void for_each(Function f) {
         }
         cout << "}" << endl;
     }
-
+void resize(unsigned int newCapacity) {
+            T* newStorage = new T[newCapacity];
+            for(unsigned int i = 0; i < sz; i++) {
+                newStorage[i] = storage[i];
+            }
+            delete [] storage;
+            storage = newStorage;
+            cap = newCapacity;
+        }
+    
 private:
     void resize() {
         if (sz == cap) {

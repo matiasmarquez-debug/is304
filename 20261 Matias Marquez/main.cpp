@@ -30,6 +30,24 @@ void aumentar(int& v) {
 }
 
 int main() {
- 
+ HashTable<string, string> ht(20);
+    ht.insert("matias", "marquez");
+    ht.insert("nicolas", "castaño");
+    ht.insert("gustavo", "gutierrez");
+     ht.insert("be", "hola");
+
+    /*unsigned int numhash;
+        numhash = ht.hashFunction("matias");
+        cout << "Hash de clave matias: " << numhash << endl;
+         numhash = ht.hashFunction("nicolas");
+        cout << "Hash de clave nicolas: " << numhash << endl;
+         numhash = ht.hashFunction("gustavo");
+        cout << "Hash de clave gustavo: " << numhash << endl;
+*/ ht.remove("be");
+  auto res = ht.find("be");
+  if (res.first) 
+  {
+    cout <<"El valor de be es: "<< res.second<<endl;
+  }else cout <<"be no esta en la tabla";
 return 0;
 }

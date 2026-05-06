@@ -26,7 +26,10 @@ private:
     Node* get_next(){
         return next;
     }
-    const T& get_data(){
+    const T& get_data() const{
+        return data;
+    }
+    T& get_data(){
         return data;
     }
     void set_data(const T& elem){
@@ -145,8 +148,9 @@ public:
    {delete first;
      first = nullptr; last=nullptr; sz--; return;}
     Node* tmp=first;
-    for (unsigned int i=0; i<sz-1; i++)
-    tmp = tmp->get_next();
+    while (tmp->get_next() != last) {
+        tmp = tmp->get_next();
+    }
     delete last;
     last = tmp;
     last->set_next(nullptr);
@@ -490,6 +494,16 @@ void for_each(Function f)  {
 }
 
 template<typename Function>
+void for_eachro(Function f)  {
+    Node* tmp = first;
+    while (tmp!= nullptr)
+    {
+    f(tmp->get_data());   
+    tmp = tmp->get_next();
+    } 
+}
+
+template<typename Function>
 T foldl(Function f, T acum) const { 
     Node* tmp = first;
     while (tmp != nullptr) {
@@ -503,6 +517,10 @@ T foldr(Function f, T acum) const{
     List<T> reversed(*this);
     reversed.reverse();
     return reversed.foldl(f, acum);
+}
+
+T back() {
+    return last->get_data();
 }
 };
 #endif
