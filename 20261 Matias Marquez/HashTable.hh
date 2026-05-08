@@ -80,6 +80,19 @@ public:
     table[index].pop_back();
     sz--;}
     }
+
+    void rehash(unsigned int newcap){
+        m = newcap;
+        Vector<List<pair<K, V>>> copy(table);
+        for (unsigned int i = 0; i < table.capacity(); ++i) {
+            table[i].clear();
+        } sz = 0;
+        table.resize(m);
+        for (unsigned int i = 0; i < copy.capacity(); ++i)
+         copy[i].for_eachro([&](const pair<K,V>& elem){
+            insert(elem.first,elem.second);
+         });
+    }
 };
 
 #endif 

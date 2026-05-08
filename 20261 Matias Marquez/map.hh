@@ -15,8 +15,8 @@ private:
         Node* left;
         Node* right;
     public:
-        Node():key(),val(),left(nullptr),right(){}
-        Node(K a, V b):key(a),val(b),left(nullptr),right(){}
+        Node():key(),val(),left(nullptr),right(nullptr){}
+        Node(K a, V b):key(a),val(b),left(nullptr),right(nullptr){}
         bool hasleft() {return left != nullptr;}
         bool hasright() {return right != nullptr;}
         const K& getkey() const{return key;}
