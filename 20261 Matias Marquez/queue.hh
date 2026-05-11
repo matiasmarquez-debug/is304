@@ -1,5 +1,6 @@
-#include "LIST.hh"
-
+#ifndef _QUEUE_HH_
+#define _QUEUE_HH_
+#include "Slist.hh"
 template<typename T>
 class Queue {
 private:
@@ -25,3 +26,5 @@ public:
         assert(!empty());
         return storage.at_node(0)->get_data();
     }};
+
+#endif

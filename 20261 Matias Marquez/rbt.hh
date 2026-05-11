@@ -78,12 +78,12 @@ public:
     Node* remove(K& key, Node* n, bool& needfixup, Node*& x, Node*& xparent){
         if (n) return n;
         if (key < n->getkey()){
-            Node* leftchild = remove(key, n->getleft(), &needfixup, &x, &xparent);
+            Node* leftchild = remove(key, n->getleft(), needfixup, x, xparent);
             n->setleft(leftchild);
             if (leftchild) leftchild->setparent(n);
             return n;
         } else if (n->getkey() < key){
-            Node* rightchild = remove(key, n->getright(),&needfixup, &x, &xparent);
+            Node* rightchild = remove(key, n->getright(),needfixup, x, xparent);
             n->setright(rightchild);
             if (rightchild) rightchild->setparent(n);
             return n;
@@ -114,7 +114,7 @@ public:
                 n->setkey(m->getkey());
                 n->setval(m->getvalue());
 
-                Node* rightchild = remove(m->getkey(), n->getright(), &needfixup, &x, &xparent);
+                Node* rightchild = remove(m->getkey(), n->getright(), needfixup, x, xparent);
                 n->setright(rightchild);
                 if (rightchild) rightchild->setparent(n);
                 return n;
@@ -125,7 +125,7 @@ public:
 
     void removefixup(Node* x, Node* xparent){
         if (root == x || getcolor(x) == RED){
-            if (x) x->setcolor(RED);
+            if (x) x->setcolor(BLACK);
         return;}
         if (x == xparent->getleft()){
             Node* w = xparent->getright();
@@ -140,10 +140,12 @@ public:
                removefixup(xparent, xparent->getparent());
                return;
             } else {
-                if (getcolor(w->getleft()) == RED){
+                if (getcolor(w->getright()) == BLACK){
                     w->setcolor(RED);
-                    w->getleft()->setcolor(BLACK);
+                    if(w->getleft()) w->getleft()->setcolor(BLACK);
                     rightrotate(w);
+                    removeFixup(x, x_parent);
+                    return;
                 }else{
                     w->setcolor(getcolor(w->getparent));
                     xparent->setcolor(BLACK);

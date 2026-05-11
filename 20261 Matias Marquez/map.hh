@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
+#include "queue.hh"
 using namespace std;
 
 template<typename K, typename V>
@@ -177,6 +178,8 @@ private:
     return p;
     }
 
+    public:
+
 template <typename function>
     void preorden(function f, Node* n){
         if (n==nullptr) return;
@@ -191,7 +194,32 @@ template <typename function>
         postorden(f, n->getleft());
         postorden(f, n->getright());
            f(n->getval());
+    }
+template <typename function>
+    void inorden(function f, Node* n){
+        if (n==nullptr) return;
+        inorden(f, n->getleft());
+           f(n->getval());
+        inorden(f, n->getright());
+    }
+template <typename function>
+    void levelorden(function f){
+        if (root == nullptr) return;
+        Queue<Node*> q;
+        q.push(root);
+       recursion_levelorden(f, q);
     }    
+
+template <typename function>
+    void recursion_levelorden(function f, Queue<Node*> q){
+       if(q.empty) return;
+       Node* n = q.front();
+       q.pop();
+       f(n);
+      if (n->getleft()) q.push(n->getleft());
+      if (n->getright()) q.push(n->getright());
+      recursion_levelorden(f,q);
+    }
 };
 
 
