@@ -1,8 +1,11 @@
-#include "Vector.hh"
+/*#include "Vector.hh"
 #include "SList.hh"
 #include "dlist.hh"
-#include "map.hh"
+#include "map.hh"*/
 #include "HashTable.hh"
+#include "stackk.hh"
+#include "rbt.hh"
+#include "heap.hh"
 #include <iostream>
 using namespace std;
 bool isEven(int num) {

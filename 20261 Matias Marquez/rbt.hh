@@ -11,18 +11,19 @@ private:
     private:
         K key;
         V val;
-        Color color;
+        Color color_;
+        Node* root;
         Node* parent;
         Node* left;
         Node* right; 
     public:
-        Node():key(),val(),Color(RED),parent(nullptr),left(nullptr),right(nullptr){}
-        Node(K a, V b):key(a),val(b),Color(RED),parent(nullptr),left(nullptr),right(nullptr){}
+        Node():key(),val(),color_(RED),parent(nullptr),left(nullptr),right(nullptr){}
+        Node(K a, V b):key(a),val(b),color_(RED),parent(nullptr),left(nullptr),right(nullptr){}
         const K& getkey() const { return key; }
         const V& getvalue() const {return val;}
         V& getvalue() {return val;}
         void setval(const V& v) {val = v;}
-        void setkey(const &K k) {key=k;}
+        void setkey(const K& k) {key=k;}
         bool hasleft() {return left != nullptr;}
         bool hasright() {return right != nullptr;}
         Node* getleft() const{return left;}
@@ -31,13 +32,13 @@ private:
         void setright(Node* r) {right = r;}
         void setparent(Node* p) {parent = p;}
         Node* getparent() const {return parent;}
-        void setcolor(Color c) {color = c;}
-        Color color() const {return color;}
+        void setcolor(Color c) {color_ = c;}
+        Color color() {return color_;}
     };
 Node* root;
 unsigned int sz;
 public:
-    RBT(): rooot(nullptr), sz(0){}
+    RBT(): root(nullptr), sz(0){}
     ~RBT(){clear();}
     unsigned int size() const {return sz;}
     bool empty() const {return root==nullptr;}
@@ -144,7 +145,7 @@ public:
                     w->setcolor(RED);
                     if(w->getleft()) w->getleft()->setcolor(BLACK);
                     rightrotate(w);
-                    removeFixup(x, x_parent);
+                    removeFixup(x, xparent);
                     return;
                 }else{
                     w->setcolor(getcolor(w->getparent));
@@ -159,8 +160,8 @@ public:
         if (getColor(w) == RED) {
             w->setcolor(BLACK);
             xparent->setcolor(RED);
-            rightrotate(x_parent);
-            removeFixup(x, x_parent);
+            rightrotate(xparent);
+            removeFixup(x, xparent);
             return;
         }
 
@@ -174,13 +175,13 @@ public:
                 if (w->getright() != nullptr) w->getright()->setcolor(BLACK);
                 w->setcolor(RED);
                 leftrotate(w);
-                removeFixup(x, x_parent);
+                removeFixup(x, xparent);
                 return;
             }
-            w->setcolor(getColor(x_parent));
+            w->setcolor(getColor(xparent));
             xparent->setcolor(BLACK);
             if (w->getleft() != nullptr) w->getleft()->setcolor(BLACK);
-            rightrotate(x_parent);
+            rightrotate(xparent);
             return; 
         }
     }

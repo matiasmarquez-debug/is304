@@ -7,7 +7,7 @@ template <typename K, typename V>
 class HashTable {
 private:
     Vector<pair<K, V>> table;
-    unsigned int m;;
+    unsigned int m;
     unsigned int sz;
 public:
     unsigned int hashFunction(const K& key) const {
@@ -47,7 +47,7 @@ public:
             }
         }
         rehash();
-        insert(const K& key, const V& val);
+        insert(key,value);
   }
   void limpiarinicio(){
     for (unsigned int i = 0; i< table.capacity(); i++){
@@ -58,7 +58,7 @@ public:
 
   void rehash()
     {m = table.capacity() * 1.5;
-    vector<pair<K,V>> copy(&table);
+    Vector<pair<K,V>> copy(&table);
     limpiarinicio(table);
     table.resize(m);
     for (unsigned int i = 0; i < copy.size(); i++){

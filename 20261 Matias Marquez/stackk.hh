@@ -9,7 +9,7 @@ class Stack {
 private:
 List<T> storage;
 public:
-Stack():storage(){
+Stack():storage(){}
 Stack(const Stack<T>& other) : storage(other.storage){}
 bool empty() const {  return storage.empty(); }
 unsigned int size() const {return storage.size();}
@@ -21,7 +21,7 @@ void pop() {
     storage.pop_back();
 }
 
-}
+
 
 };
 
